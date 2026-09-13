@@ -1,0 +1,66 @@
+#===================================================================================================
+#  Spring Boot Application Configuration
+#===================================================================================================
+spring:
+  application:
+    name: store-locator-service
+
+  #--------------------------------------------------------------------------------------------------
+  #  Database Configuration (H2 In?Memory)
+  #--------------------------------------------------------------------------------------------------
+  datasource:
+    url: jdbc:h2:mem:jumbo-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: sa #todo: store in vault
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  #--------------------------------------------------------------------------------------------------
+  #  Flyway Database Migration Configuration
+  #--------------------------------------------------------------------------------------------------
+  flyway:
+    locations: classpath:com/jumbo/store/locator/db/migration
+
+#--------------------------------------------------------------------------------------------------
+#  Springdoc OpenAPI UI Properties
+#--------------------------------------------------------------------------------------------------
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+#--------------------------------------------------------------------------------------------------
+#  OpenAPI Metadata
+#--------------------------------------------------------------------------------------------------
+openapi:
+  server-url: http://localhost:${server.port}
+  version: v1
+
+#--------------------------------------------------------------------------------------------------
+#  Server Configuration
+#--------------------------------------------------------------------------------------------------
+server:
+  port: 8080
+
+#--------------------------------------------------------------------------------------------------
+#  Actuator Health & Info Endpoints
+#--------------------------------------------------------------------------------------------------
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
